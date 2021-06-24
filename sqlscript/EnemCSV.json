@@ -1,0 +1,17 @@
+{
+	"name": "EnemCSV",
+	"properties": {
+		"content": {
+			"query": "-- This is auto-generated code\nSELECT\n    count(*)\nFROM\n    OPENROWSET(\n        BULK 'https://adlsworkshopsynapse.dfs.core.windows.net/raw/enem/MICRODADOS_ENEM_2019.csv',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        FIELDTERMINATOR = ';',\n        FIRSTROW = 2\n    ) AS [result]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"poolName": "Built-in",
+				"databaseName": "master"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

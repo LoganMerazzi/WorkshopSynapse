@@ -1,0 +1,187 @@
+{
+	"name": "Notebook Enem",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "sparkworkshop",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/4832a206-d0dd-4491-93a6-c7b77dc99dda/resourceGroups/gavb-workshop-synapse/providers/Microsoft.Synapse/workspaces/gavb-synapse-workspace/bigDataPools/sparkworkshop",
+				"name": "sparkworkshop",
+				"type": "Spark",
+				"endpoint": "https://gavb-synapse-workspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkworkshop",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.0",
+				"nodeCount": 3,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			}
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"from pyspark.sql import SparkSession\n",
+					"from pyspark.sql.types import *\n",
+					"\n",
+					"# Primary storage info\n",
+					"account_name = 'adlsworkshopsynapse' # fill in your primary account name\n",
+					"container_name = 'raw' # fill in your container name\n",
+					"relative_path = 'enem' # fill in your relative folder path\n",
+					"\n",
+					"adls_path = 'abfss://%s@%s.dfs.core.windows.net/%s' % (container_name, account_name, relative_path)\n",
+					"print('Primary storage account path: ' + adls_path)"
+				],
+				"execution_count": 1
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"parquet_path = adls_path + '/*.parquet'\n",
+					"print('parquet file path: ' + parquet_path)\n",
+					"#json_path = adls_path + 'arq.json'\n",
+					"#print('json file path： ' + json_path)\n",
+					"#csv_path = adls_path + 'arq.csv'\n",
+					"#print('csv file path: ' + csv_path)"
+				],
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dfEnemParquet = spark.read.parquet(parquet_path)"
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dfEnemParquet.count()"
+				],
+				"execution_count": 15
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dfEnemParquet.show(n=50)"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dfEnemParquet = dfEnemParquet.select(\"SG_UF_RESIDENCIA\", \"TP_SEXO\", \"TP_ESTADO_CIVIL\")"
+				],
+				"execution_count": 7
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dfEnemParquet.show()"
+				],
+				"execution_count": 8
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dfEnemParquet.groupBy(\"TP_SEXO\").count().show()"
+				],
+				"execution_count": 10
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dfEnemParquet.createOrReplaceTempView(\"Enem\")"
+				],
+				"execution_count": 11
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"diagram": {
+						"activateDiagramType": 1,
+						"chartConfig": {
+							"category": "bar",
+							"keys": [
+								"TP_SEXO"
+							],
+							"values": [
+								"count(1)"
+							],
+							"yLabel": "count(1)",
+							"xLabel": "TP_SEXO",
+							"aggregation": "SUM",
+							"aggByBackend": false
+						},
+						"aggData": "{\"count(1)\":{\"F\":3031822,\"M\":2063448}}",
+						"isSummary": false,
+						"previewData": {
+							"filter": null
+						},
+						"isSql": true
+					}
+				},
+				"source": [
+					"%%sql\n",
+					"\n",
+					"select TP_SEXO, count(*)\n",
+					"from Enem\n",
+					"group by TP_SEXO"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dfEnemNovo = spark.sql(\n",
+					"\"\"\"select TP_SEXO, count(*)\n",
+					"from Enem\n",
+					"group by TP_SEXO\"\"\")"
+				],
+				"execution_count": 16
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"account_name = 'adlsworkshopsynapse' # fill in your primary account name\n",
+					"container_name = 'trusted' # fill in your container name\n",
+					"relative_path = 'enem' # fill in your relative folder path\n",
+					"\n",
+					"adls_path = 'abfss://%s@%s.dfs.core.windows.net/%s' % (container_name, account_name, relative_path)\n",
+					"print('Primary storage account path: ' + adls_path)"
+				],
+				"execution_count": 17
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"dfEnemParquet.write.parquet(adls_path)"
+				],
+				"execution_count": 18
+			}
+		]
+	}
+}
