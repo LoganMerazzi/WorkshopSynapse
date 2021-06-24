@@ -1,0 +1,2155 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"type": "string",
+			"metadata": "Nome do Workspace",
+			"defaultValue": "gavb-synapse-workspace"
+		},
+		"gavb-synapse-workspace-WorkspaceDefaultSqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Cadeia de caracteres segura para 'connectionString' de 'gavb-synapse-workspace-WorkspaceDefaultSqlServer'"
+		},
+		"gavb-synapse-workspace-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adlsworkshopsynapse.dfs.core.windows.net"
+		}
+	},
+	"variables": {
+		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('workspaceName'), '/Enem')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "CSV para Parquet",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "NU_INSCRICAO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_INSCRICAO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NU_ANO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_ANO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_MUNICIPIO_RESIDENCIA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_MUNICIPIO_RESIDENCIA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NO_MUNICIPIO_RESIDENCIA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NO_MUNICIPIO_RESIDENCIA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_UF_RESIDENCIA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_UF_RESIDENCIA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "SG_UF_RESIDENCIA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SG_UF_RESIDENCIA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NU_IDADE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_IDADE",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_SEXO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_SEXO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_ESTADO_CIVIL",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_ESTADO_CIVIL",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_COR_RACA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_COR_RACA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_NACIONALIDADE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_NACIONALIDADE",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_MUNICIPIO_NASCIMENTO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_MUNICIPIO_NASCIMENTO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NO_MUNICIPIO_NASCIMENTO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NO_MUNICIPIO_NASCIMENTO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_UF_NASCIMENTO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_UF_NASCIMENTO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "SG_UF_NASCIMENTO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SG_UF_NASCIMENTO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_ST_CONCLUSAO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_ST_CONCLUSAO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_ANO_CONCLUIU",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_ANO_CONCLUIU",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_ESCOLA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_ESCOLA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_ENSINO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_ENSINO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_TREINEIRO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_TREINEIRO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_ESCOLA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_ESCOLA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_MUNICIPIO_ESC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_MUNICIPIO_ESC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NO_MUNICIPIO_ESC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NO_MUNICIPIO_ESC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_UF_ESC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_UF_ESC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "SG_UF_ESC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SG_UF_ESC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_DEPENDENCIA_ADM_ESC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_DEPENDENCIA_ADM_ESC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_LOCALIZACAO_ESC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_LOCALIZACAO_ESC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_SIT_FUNC_ESC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_SIT_FUNC_ESC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_BAIXA_VISAO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_BAIXA_VISAO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_CEGUEIRA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_CEGUEIRA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_SURDEZ",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_SURDEZ",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_DEFICIENCIA_AUDITIVA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_DEFICIENCIA_AUDITIVA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_SURDO_CEGUEIRA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_SURDO_CEGUEIRA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_DEFICIENCIA_FISICA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_DEFICIENCIA_FISICA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_DEFICIENCIA_MENTAL",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_DEFICIENCIA_MENTAL",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_DEFICIT_ATENCAO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_DEFICIT_ATENCAO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_DISLEXIA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_DISLEXIA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_DISCALCULIA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_DISCALCULIA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_AUTISMO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_AUTISMO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_VISAO_MONOCULAR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_VISAO_MONOCULAR",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_OUTRA_DEF",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_OUTRA_DEF",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_GESTANTE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_GESTANTE",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_LACTANTE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_LACTANTE",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_IDOSO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_IDOSO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_ESTUDA_CLASSE_HOSPITALAR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_ESTUDA_CLASSE_HOSPITALAR",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_SEM_RECURSO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_SEM_RECURSO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_BRAILLE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_BRAILLE",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_AMPLIADA_24",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_AMPLIADA_24",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_AMPLIADA_18",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_AMPLIADA_18",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_LEDOR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_LEDOR",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_ACESSO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_ACESSO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_TRANSCRICAO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_TRANSCRICAO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_LIBRAS",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_LIBRAS",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_TEMPO_ADICIONAL",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_TEMPO_ADICIONAL",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_LEITURA_LABIAL",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_LEITURA_LABIAL",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_MESA_CADEIRA_RODAS",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_MESA_CADEIRA_RODAS",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_MESA_CADEIRA_SEPARADA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_MESA_CADEIRA_SEPARADA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_APOIO_PERNA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_APOIO_PERNA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_GUIA_INTERPRETE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_GUIA_INTERPRETE",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_COMPUTADOR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_COMPUTADOR",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_CADEIRA_ESPECIAL",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_CADEIRA_ESPECIAL",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_CADEIRA_CANHOTO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_CADEIRA_CANHOTO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_CADEIRA_ACOLCHOADA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_CADEIRA_ACOLCHOADA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_PROVA_DEITADO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_PROVA_DEITADO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_MOBILIARIO_OBESO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_MOBILIARIO_OBESO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_LAMINA_OVERLAY",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_LAMINA_OVERLAY",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_PROTETOR_AURICULAR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_PROTETOR_AURICULAR",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_MEDIDOR_GLICOSE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_MEDIDOR_GLICOSE",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_MAQUINA_BRAILE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_MAQUINA_BRAILE",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_SOROBAN",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_SOROBAN",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_MARCA_PASSO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_MARCA_PASSO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_SONDA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_SONDA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_MEDICAMENTOS",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_MEDICAMENTOS",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_SALA_INDIVIDUAL",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_SALA_INDIVIDUAL",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_SALA_ESPECIAL",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_SALA_ESPECIAL",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_SALA_ACOMPANHANTE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_SALA_ACOMPANHANTE",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_MOBILIARIO_ESPECIFICO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_MOBILIARIO_ESPECIFICO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_MATERIAL_ESPECIFICO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_MATERIAL_ESPECIFICO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "IN_NOME_SOCIAL",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "IN_NOME_SOCIAL",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_MUNICIPIO_PROVA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_MUNICIPIO_PROVA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NO_MUNICIPIO_PROVA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NO_MUNICIPIO_PROVA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_UF_PROVA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_UF_PROVA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "SG_UF_PROVA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SG_UF_PROVA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_PRESENCA_CN",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_PRESENCA_CN",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_PRESENCA_CH",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_PRESENCA_CH",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_PRESENCA_LC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_PRESENCA_LC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_PRESENCA_MT",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_PRESENCA_MT",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_PROVA_CN",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_PROVA_CN",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_PROVA_CH",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_PROVA_CH",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_PROVA_LC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_PROVA_LC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "CO_PROVA_MT",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CO_PROVA_MT",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NU_NOTA_CN",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_NOTA_CN",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NU_NOTA_CH",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_NOTA_CH",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NU_NOTA_LC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_NOTA_LC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NU_NOTA_MT",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_NOTA_MT",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TX_RESPOSTAS_CN",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TX_RESPOSTAS_CN",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TX_RESPOSTAS_CH",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TX_RESPOSTAS_CH",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TX_RESPOSTAS_LC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TX_RESPOSTAS_LC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TX_RESPOSTAS_MT",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TX_RESPOSTAS_MT",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_LINGUA",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_LINGUA",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TX_GABARITO_CN",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TX_GABARITO_CN",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TX_GABARITO_CH",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TX_GABARITO_CH",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TX_GABARITO_LC",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TX_GABARITO_LC",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TX_GABARITO_MT",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TX_GABARITO_MT",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "TP_STATUS_REDACAO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TP_STATUS_REDACAO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NU_NOTA_COMP1",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_NOTA_COMP1",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NU_NOTA_COMP2",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_NOTA_COMP2",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NU_NOTA_COMP3",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_NOTA_COMP3",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NU_NOTA_COMP4",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_NOTA_COMP4",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NU_NOTA_COMP5",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_NOTA_COMP5",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "NU_NOTA_REDACAO",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NU_NOTA_REDACAO",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q001",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q001",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q002",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q002",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q003",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q003",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q004",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q004",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q005",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q005",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q006",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q006",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q007",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q007",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q008",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q008",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q009",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q009",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q010",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q010",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q011",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q011",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q012",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q012",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q013",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q013",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q014",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q014",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q015",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q015",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q016",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q016",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q017",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q017",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q018",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q018",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q019",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q019",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q020",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q020",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q021",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q021",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q022",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q022",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q023",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q023",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q024",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q024",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									},
+									{
+										"source": {
+											"name": "Q025",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Q025",
+											"type": "String",
+											"physicalType": "UTF8"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "EnemCSV",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "EnemParquet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"annotations": [],
+				"lastPublishTime": "2021-06-24T20:39:51Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/EnemCSV')]",
+				"[concat(variables('workspaceId'), '/datasets/EnemParquet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/EnemCSV')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "gavb-synapse-workspace-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "MICRODADOS_ENEM_2019.csv",
+						"folderPath": "enem",
+						"fileSystem": "raw"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "NU_INSCRICAO;NU_ANO;CO_MUNICIPIO_RESIDENCIA;NO_MUNICIPIO_RESIDENCIA;CO_UF_RESIDENCIA;SG_UF_RESIDENCIA;NU_IDADE;TP_SEXO;TP_ESTADO_CIVIL;TP_COR_RACA;TP_NACIONALIDADE;CO_MUNICIPIO_NASCIMENTO;NO_MUNICIPIO_NASCIMENTO;CO_UF_NASCIMENTO;SG_UF_NASCIMENTO;TP_ST_CONCLUSAO;TP_ANO_CONCLUIU;TP_ESCOLA;TP_ENSINO;IN_TREINEIRO;CO_ESCOLA;CO_MUNICIPIO_ESC;NO_MUNICIPIO_ESC;CO_UF_ESC;SG_UF_ESC;TP_DEPENDENCIA_ADM_ESC;TP_LOCALIZACAO_ESC;TP_SIT_FUNC_ESC;IN_BAIXA_VISAO;IN_CEGUEIRA;IN_SURDEZ;IN_DEFICIENCIA_AUDITIVA;IN_SURDO_CEGUEIRA;IN_DEFICIENCIA_FISICA;IN_DEFICIENCIA_MENTAL;IN_DEFICIT_ATENCAO;IN_DISLEXIA;IN_DISCALCULIA;IN_AUTISMO;IN_VISAO_MONOCULAR;IN_OUTRA_DEF;IN_GESTANTE;IN_LACTANTE;IN_IDOSO;IN_ESTUDA_CLASSE_HOSPITALAR;IN_SEM_RECURSO;IN_BRAILLE;IN_AMPLIADA_24;IN_AMPLIADA_18;IN_LEDOR;IN_ACESSO;IN_TRANSCRICAO;IN_LIBRAS;IN_TEMPO_ADICIONAL;IN_LEITURA_LABIAL;IN_MESA_CADEIRA_RODAS;IN_MESA_CADEIRA_SEPARADA;IN_APOIO_PERNA;IN_GUIA_INTERPRETE;IN_COMPUTADOR;IN_CADEIRA_ESPECIAL;IN_CADEIRA_CANHOTO;IN_CADEIRA_ACOLCHOADA;IN_PROVA_DEITADO;IN_MOBILIARIO_OBESO;IN_LAMINA_OVERLAY;IN_PROTETOR_AURICULAR;IN_MEDIDOR_GLICOSE;IN_MAQUINA_BRAILE;IN_SOROBAN;IN_MARCA_PASSO;IN_SONDA;IN_MEDICAMENTOS;IN_SALA_INDIVIDUAL;IN_SALA_ESPECIAL;IN_SALA_ACOMPANHANTE;IN_MOBILIARIO_ESPECIFICO;IN_MATERIAL_ESPECIFICO;IN_NOME_SOCIAL;CO_MUNICIPIO_PROVA;NO_MUNICIPIO_PROVA;CO_UF_PROVA;SG_UF_PROVA;TP_PRESENCA_CN;TP_PRESENCA_CH;TP_PRESENCA_LC;TP_PRESENCA_MT;CO_PROVA_CN;CO_PROVA_CH;CO_PROVA_LC;CO_PROVA_MT;NU_NOTA_CN;NU_NOTA_CH;NU_NOTA_LC;NU_NOTA_MT;TX_RESPOSTAS_CN;TX_RESPOSTAS_CH;TX_RESPOSTAS_LC;TX_RESPOSTAS_MT;TP_LINGUA;TX_GABARITO_CN;TX_GABARITO_CH;TX_GABARITO_LC;TX_GABARITO_MT;TP_STATUS_REDACAO;NU_NOTA_COMP1;NU_NOTA_COMP2;NU_NOTA_COMP3;NU_NOTA_COMP4;NU_NOTA_COMP5;NU_NOTA_REDACAO;Q001;Q002;Q003;Q004;Q005;Q006;Q007;Q008;Q009;Q010;Q011;Q012;Q013;Q014;Q015;Q016;Q017;Q018;Q019;Q020;Q021;Q022;Q023;Q024;Q025",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/gavb-synapse-workspace-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/EnemParquet')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "gavb-synapse-workspace-WorkspaceDefaultStorage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "enem",
+						"fileSystem": "raw"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/gavb-synapse-workspace-WorkspaceDefaultStorage')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/gavb-synapse-workspace-WorkspaceDefaultSqlServer')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"DBName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('gavb-synapse-workspace-WorkspaceDefaultSqlServer_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/gavb-synapse-workspace-WorkspaceDefaultStorage')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('gavb-synapse-workspace-WorkspaceDefaultStorage_properties_typeProperties_url')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AutoResolveIntegrationRuntime')]",
+			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0
+						}
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/IntegrationRuntime1')]",
+			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
+			"type": "Microsoft.Synapse/workspaces/credentials",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/EnemCSV')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "-- This is auto-generated code\nSELECT\n    count(*)\nFROM\n    OPENROWSET(\n        BULK 'https://adlsworkshopsynapse.dfs.core.windows.net/raw/enem/MICRODADOS_ENEM_2019.csv',\n        FORMAT = 'CSV',\n        PARSER_VERSION='2.0',\n        FIELDTERMINATOR = ';',\n        FIRSTROW = 2\n    ) AS [result]",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"poolName": "Built-in",
+						"databaseName": "master"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/EnemFiltrado')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseParquetFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseParquetFormat] \n\tWITH ( FORMAT_TYPE = PARQUET)\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'trusted_adlsworkshopsynapse_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [trusted_adlsworkshopsynapse_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION   = 'https://adlsworkshopsynapse.dfs.core.windows.net/trusted', \n\t)\nGo\n\nCREATE EXTERNAL TABLE EnemFiltrado (\n\t[SG_UF_RESIDENCIA] varchar(8000),\n\t[TP_SEXO] varchar(8000),\n\t[TP_ESTADO_CIVIL] varchar(8000)\n\t)\n\tWITH (\n\tLOCATION = 'enem/*.snappy.parquet',\n\tDATA_SOURCE = [trusted_adlsworkshopsynapse_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseParquetFormat]\n\t)\nGO\n\nSELECT top 10 * FROM EnemFiltrado\nGO",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"poolName": "Built-in",
+						"databaseName": "workshopDB"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/EnemParquet01')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "SELECT\n   top 100 *\nFROM\n    OPENROWSET(\n        BULK 'https://adlsworkshopsynapse.dfs.core.windows.net/raw/enem/MICRODADOS_ENEM_2019.parquet',\n        FORMAT='PARQUET'\n    ) AS [result]\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"poolName": "Built-in",
+						"databaseName": "master"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/NYCabs')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseParquetFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseParquetFormat] \n\tWITH ( FORMAT_TYPE = PARQUET)\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'raw_adlsworkshopsynapse_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [raw_adlsworkshopsynapse_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION   = 'https://adlsworkshopsynapse.dfs.core.windows.net/raw', \n\t)\nGo\n\nCREATE EXTERNAL TABLE NYCTrip (\n\t[DateID] int,\n\t[MedallionID] int,\n\t[HackneyLicenseID] int,\n\t[PickupTimeID] int,\n\t[DropoffTimeID] int,\n\t[PickupGeographyID] int,\n\t[DropoffGeographyID] int,\n\t[PickupLatitude] float,\n\t[PickupLongitude] float,\n\t[PickupLatLong] varchar(8000),\n\t[DropoffLatitude] float,\n\t[DropoffLongitude] float,\n\t[DropoffLatLong] varchar(8000),\n\t[PassengerCount] int,\n\t[TripDurationSeconds] int,\n\t[TripDistanceMiles] float,\n\t[PaymentType] varchar(8000),\n\t[FareAmount] numeric(19,4),\n\t[SurchargeAmount] numeric(19,4),\n\t[TaxAmount] numeric(19,4),\n\t[TipAmount] numeric(19,4),\n\t[TollsAmount] numeric(19,4),\n\t[TotalAmount] numeric(19,4)\n\t)\n\tWITH (\n\tLOCATION = 'NYCabs/*.parquet',\n\tDATA_SOURCE = [raw_adlsworkshopsynapse_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseParquetFormat]\n\t)\nGO\n\nselect top 10 * from NYCTrip\n\nGO\nSELECT count(*) FROM NYCTrip\ngroup by [DateID]\nGO\n\n\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"poolName": "Built-in",
+						"databaseName": "workshopDB"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Notebook Enem')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "sparkworkshop",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/4832a206-d0dd-4491-93a6-c7b77dc99dda/resourceGroups/gavb-workshop-synapse/providers/Microsoft.Synapse/workspaces/gavb-synapse-workspace/bigDataPools/sparkworkshop",
+						"name": "sparkworkshop",
+						"type": "Spark",
+						"endpoint": "https://gavb-synapse-workspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/sparkworkshop",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.0",
+						"nodeCount": 3,
+						"cores": 4,
+						"memory": 28,
+						"extraHeader": null
+					}
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"source": [
+							"from pyspark.sql import SparkSession\n",
+							"from pyspark.sql.types import *\n",
+							"\n",
+							"# Primary storage info\n",
+							"account_name = 'adlsworkshopsynapse' # fill in your primary account name\n",
+							"container_name = 'raw' # fill in your container name\n",
+							"relative_path = 'enem' # fill in your relative folder path\n",
+							"\n",
+							"adls_path = 'abfss://%s@%s.dfs.core.windows.net/%s' % (container_name, account_name, relative_path)\n",
+							"print('Primary storage account path: ' + adls_path)"
+						],
+						"outputs": [],
+						"execution_count": 1
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"parquet_path = adls_path + '/*.parquet'\n",
+							"print('parquet file path: ' + parquet_path)\n",
+							"#json_path = adls_path + 'arq.json'\n",
+							"#print('json file path： ' + json_path)\n",
+							"#csv_path = adls_path + 'arq.csv'\n",
+							"#print('csv file path: ' + csv_path)"
+						],
+						"outputs": [],
+						"execution_count": 3
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"dfEnemParquet = spark.read.parquet(parquet_path)"
+						],
+						"outputs": [],
+						"execution_count": 4
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"dfEnemParquet.count()"
+						],
+						"outputs": [],
+						"execution_count": 15
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"dfEnemParquet.show(n=50)"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"dfEnemParquet = dfEnemParquet.select(\"SG_UF_RESIDENCIA\", \"TP_SEXO\", \"TP_ESTADO_CIVIL\")"
+						],
+						"outputs": [],
+						"execution_count": 7
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"dfEnemParquet.show()"
+						],
+						"outputs": [],
+						"execution_count": 8
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"dfEnemParquet.groupBy(\"TP_SEXO\").count().show()"
+						],
+						"outputs": [],
+						"execution_count": 10
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"dfEnemParquet.createOrReplaceTempView(\"Enem\")"
+						],
+						"outputs": [],
+						"execution_count": 11
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"diagram": {
+								"activateDiagramType": 1,
+								"chartConfig": {
+									"category": "bar",
+									"keys": [
+										"TP_SEXO"
+									],
+									"values": [
+										"count(1)"
+									],
+									"yLabel": "count(1)",
+									"xLabel": "TP_SEXO",
+									"aggregation": "SUM",
+									"aggByBackend": false
+								},
+								"aggData": "{\"count(1)\":{\"F\":3031822,\"M\":2063448}}",
+								"isSummary": false,
+								"previewData": {
+									"filter": null
+								},
+								"isSql": true
+							}
+						},
+						"source": [
+							"%%sql\n",
+							"\n",
+							"select TP_SEXO, count(*)\n",
+							"from Enem\n",
+							"group by TP_SEXO"
+						],
+						"outputs": [],
+						"execution_count": null
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"dfEnemNovo = spark.sql(\n",
+							"\"\"\"select TP_SEXO, count(*)\n",
+							"from Enem\n",
+							"group by TP_SEXO\"\"\")"
+						],
+						"outputs": [],
+						"execution_count": 16
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"account_name = 'adlsworkshopsynapse' # fill in your primary account name\n",
+							"container_name = 'trusted' # fill in your container name\n",
+							"relative_path = 'enem' # fill in your relative folder path\n",
+							"\n",
+							"adls_path = 'abfss://%s@%s.dfs.core.windows.net/%s' % (container_name, account_name, relative_path)\n",
+							"print('Primary storage account path: ' + adls_path)"
+						],
+						"outputs": [],
+						"execution_count": 17
+					},
+					{
+						"cell_type": "code",
+						"source": [
+							"dfEnemParquet.write.parquet(adls_path)"
+						],
+						"outputs": [],
+						"execution_count": 18
+					}
+				]
+			},
+			"dependsOn": []
+		}
+	]
+}
